@@ -1,4 +1,4 @@
-#Project for Programming in Cognitive and Brain Sciences class - 2019
+# Project for Programming in Cognitive and Brain Sciences class - 2019
 
 ## Simulating agents utilizing a homeostatic reinforcement learnign algorithm in an anticipatory responding experiment
 
