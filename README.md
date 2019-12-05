@@ -2,7 +2,7 @@
 
 ## Simulating agents utilizing a homeostatic reinforcement learnign algorithm in an anticipatory responding experiment
 
-This project aims to reproduce the simulation summarized by Figure 1 of **Keramati & Gutkin (2019)**
+This project aims to reproduce the simulation summarized by Figure 1 of **Keramati & Gutkin (2019)**.
 The article can be freely accessed at: https://elifesciences.org/articles/04811
 
 Briefly, the authors simulate rats in an eperimental task, in which they receive a forced drop of temperature by an ethanol injection.
