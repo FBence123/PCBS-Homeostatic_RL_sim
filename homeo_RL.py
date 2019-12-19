@@ -4,7 +4,6 @@ Created on Sun Nov 24 13:12:22 2019
 
 @author: Bence Farkas
 """
-
 import matplotlib.pyplot as plt
 import matplotlib.patches as patch
 import scipy.stats as scista
@@ -54,8 +53,9 @@ for a in range(A):
         c = int(np.random.rand() < p_tol[t,a])
     
         # Ethanol injection
-        y = ethanol(14)
-        temp[t,:,a] = [temp[t,j,a] + y[j] for j in range(temp.shape[1])]
+        if t != 8:
+            y = ethanol(14)
+            temp[t,:,a] = [temp[t,j,a] + y[j] for j in range(temp.shape[1])]
         
         # Tolerance response if chosen
         if c == 1:
@@ -88,7 +88,7 @@ plt.xlabel("Hour")
 plt.ylabel("Change of temperature")
 plt.title("Ethanol injection")
 
-#Tolerance response plot (Figure 3C)
+#Tolerance response plot (Figure 3D)
 y = tolerance(1.2)
 plt.figure()
 plt.plot(np.arange(0,49),y,"k-")
@@ -131,3 +131,22 @@ plt.gca().add_patch(patch.Polygon([[8.5,0],[9.5,0],[9.5,1],[8.5,1]],color = "sil
 plt.xlabel("Blocks")
 plt.ylabel("Response probability")
 
+#Temperature changes plot (Figure 3C)
+figtemp = temp.mean(2)
+figtemp = figtemp[:,3:7]
+plt.figure()
+plt.xlim([-1,40])
+plt.ylim([-15,15])
+for n in range(N):
+    plt.plot(range(n*4,(n*4)+4),figtemp[n,:],"ko")
+    plt.plot(range(n*4,(n*4)+4),figtemp[n,:],"k-")
+plt.hlines(0,-1,40,colors = "silver", linestyles = "dashed")
+plt.gca().add_patch(patch.Polygon([[32,-15],[35,-15],[35,15],[32,15]],color = "silver"))
+plt.xticks(np.arange(1.5,40,4),["1","2","3","4","5","6","7","8","E1","R1"])
+plt.yticks(range(-15,16,5),[i/10 for i in range(-15,16,5)])
+plt.annotate("30'",xy=(0,-11),xytext=(6,12.5), arrowprops=dict(facecolor='red', shrink=0.05, connectionstyle="angle3,angleA=0,angleB=90"))
+plt.annotate("60'",xy=(1,-13),xytext=(6,10.5), arrowprops=dict(facecolor='red', shrink=0.05, connectionstyle="angle3,angleA=0,angleB=90"))
+plt.annotate("90'",xy=(2,-13.5),xytext=(6,8.5), arrowprops=dict(facecolor='red', shrink=0.05, connectionstyle="angle3,angleA=0,angleB=90"))
+plt.annotate("120'",xy=(3,-13),xytext=(6,6.5), arrowprops=dict(facecolor='red', shrink=0.05, connectionstyle="angle3,angleA=0,angleB=90"))
+plt.xlabel("Blocks")
+plt.ylabel("Change of temperature")
