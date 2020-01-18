@@ -1,6 +1,6 @@
 # Project for Programming in Cognitive and Brain Sciences class - 2019
 
-## Simulating agents utilizing a homeostatic reinforcement learnign algorithm in an anticipatory responding experiment
+## Simulating agents utilizing a homeostatic reinforcement learning algorithm in an anticipatory responding experiment
 
 This project aims to reproduce the simulation summarized by Figure 1 of **Keramati & Gutkin (2019)**.
 The article can be freely accessed at: https://elifesciences.org/articles/04811
