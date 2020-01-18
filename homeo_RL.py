@@ -11,8 +11,11 @@ import numpy as np
 
 ## Set parameters
 
-A = 500
-N = 10
+#Parameters of the simulation
+A = 500 #Number of simulated agents
+N = 10 #Number of simulated trials
+
+#Parameters of the RL model
 h_star = 0
 m = 2
 n = 4
@@ -27,30 +30,34 @@ Q_tol[0,:] = Q_tol_a
 Q_nul[0,:] = Q_nul_a
 temp = np.zeros((N,49,A))
 p_tol = np.zeros((N,A))
-c_l = np.zeros((N,A))
+choice_l = np.zeros((N,A))
 
-def ethanol (norm):
+##Useful functions to model the experiment
+
+def ethanol (norm): #ethanol response, normalizes a beta distribution to an arbitrary range
     x = np.arange(1/47,1,1/47)
     y = scista.beta.pdf(x = x, a = 1.35, b = 6)
     y = list(np.concatenate((np.zeros(3), y)))
     y = [-(((y[j]-min(y))*norm)/max(y)-min(y)) for j in range(len(y))]
     return y
 
-def tolerance (norm):
+def tolerance (norm): #tolerance response, normalizes a beta distribution to an arbitrary range
     x = np.arange(1/50,1,1/50)
     y = list(scista.beta.pdf(x = x, a = 2.2, b = 6))
     y = [((y[j]-min(y))*norm)/max(y)-min(y) for j in range(len(y))]
     y[0] = 0
     return y
 
+## Perform the simulations
+
 for a in range(A):
     Q_tol_a = 0
-    Q_nul_a = 23
+    Q_nul_a = 23 #Initial values chosen to qualitatively match the study
     for t in range(N):
         
         # Make choice
         p_tol[t,a] = 1 / (1 + np.exp(beta * (Q_nul_a - Q_tol_a)))
-        c = int(np.random.rand() < p_tol[t,a])
+        choice = int(np.random.rand() < p_tol[t,a])
     
         # Ethanol injection
         if t != 8:
@@ -58,7 +65,7 @@ for a in range(A):
             temp[t,:,a] = [temp[t,j,a] + y[j] for j in range(temp.shape[1])]
         
         # Tolerance response if chosen
-        if c == 1:
+        if choice == 1:
            y = tolerance(12)
            temp[t,:,a] = [temp[t,j,a] + y[j] for j in range(temp.shape[1])]
             
@@ -67,13 +74,15 @@ for a in range(A):
         R = sum([gamma**j * (D[j] - D[j+1]) for j in range(len(D)-1)])
         
         # Q-learning
-        if c == 1:
+        if choice == 1:
             Q_tol_a += alpha* (R - Q_tol_a)
         else:
             Q_nul_a += alpha* (R - Q_nul_a)
         Q_tol[t+1,a] = Q_tol_a
         Q_nul[t+1,a] = Q_nul_a
-        c_l[t,a] = c
+        choice_l[t,a] = choice
+
+## Create the plots
 
 #Ethanol injection plot (Figure 3B)
 y = ethanol(1.4)
